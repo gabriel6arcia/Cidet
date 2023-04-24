@@ -1,0 +1,142 @@
+<div class="container">
+  <div>
+    <a routerLink="" class="btn btn-outline-light btn-lg"> Atrás </a>
+    <h1 class="mt-2" style="display: flex; justify-content: center">
+      Formulario cliente
+    </h1>
+    <div class="card card-client">
+      <div *ngIf="loading$ | async; else clientPage">
+        <div
+          class="mt-8"
+          style="display: flex; justify-content: center; padding: 10em"
+        >
+          <p style="font-size: 30px; font-weight: 500">Cargando...</p>
+        </div>
+      </div>
+      <ng-template #clientPage>
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between">
+            <h2>Clientes</h2>
+            <button
+              class="btn btn-outline-primary mt-2"
+              style="border: 0"
+              (click)="toggleClient()"
+            >
+              + Añadir cliente
+            </button>
+          </div>
+          <form class="mt-4" *ngIf="showAdd">
+            <div class="mb-2">
+              <label class="form-label">Nombre</label>
+              <input
+                type="text"
+                name="name"
+                [(ngModel)]="nameAdd"
+                class="form-control border-secondary"
+                placeholder="Por favor ingrese el nombre del usuario"
+              />
+            </div>
+            <div style="display: flex; place-content: end">
+              <button
+                class="btn btn-outline-secondary mt-2"
+                (click)="toggleClient()"
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-primary mt-2 ms-2"
+                (click)="onCreateClient()"
+              >
+                Añadir
+              </button>
+            </div>
+          </form>
+          <div class="table-responsive" style="width: 100%">
+            <table class="table mt-4">
+              <thead>
+                <tr>
+                  <th scope="col">Cliente</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let client of clients$ | async; index as index">
+                <tr>
+                  <td scope="row">{{ client.name }}</td>
+                  <td style="display: flex; justify-content: end">
+                    <div>
+                      <a
+                        style="text-decoration: none"
+                        (click)="toggleData(index)"
+                      >
+                        <img
+                          src="{{ img }}"
+                          style="width: 10px"
+                          (click)="toggleImg($event)"
+                        />
+                      </a>
+                      <button
+                        class="btn btn-primary ms-2"
+                        (click)="toggleUpdate(index, client.name)"
+                      >
+                        Modificar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger ms-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#warningModalClient"
+                        (click)="clientToDelete = client.id"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="indexUpdate === index">
+                  <td colspan="2">
+                    <form class="mt-4 mb-4">
+                      <div class="mb-2">
+                        <label class="form-label">Nombre</label>
+                        <input
+                          type="text"
+                          name="name"
+                          [(ngModel)]="newName"
+                          class="form-control border-secondary"
+                          placeholder="Por favor ingrese el nombre del usuario"
+                        />
+                      </div>
+                      <div style="display: flex; place-content: end">
+                        <button
+                          class="btn btn-outline-secondary mt-2"
+                          (click)="toggleUpdate(null, '')"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          class="btn btn-primary mt-2 ms-2"
+                          (click)="onUpdateClient(client.id, newName)"
+                        >
+                          Actualizar
+                        </button>
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+                <tr *ngIf="indexData === index">
+                  <td colspan="2">
+                    <app-form-data
+                      class="mt-2"
+                      [data]="client.data"
+                      [clientId]="client.id"
+                    ></app-form-data>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <app-modal-warning-client (onDelete)="onDeleteClient($event)" />
+</div>

@@ -1,0 +1,21 @@
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  padding: 2em;
+  margin: 40px 0;
+  background-color: #d5d5d5;
+}
+
+.containerForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}

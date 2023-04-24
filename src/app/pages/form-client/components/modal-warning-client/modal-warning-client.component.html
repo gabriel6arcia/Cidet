@@ -1,0 +1,33 @@
+<div
+  class="modal fade"
+  id="warningModalClient"
+  tabindex="-1"
+  aria-labelledby="warningModalClientLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="warningModalLabel">
+          ¿Seguro deseas eliminar este cliente?
+        </h5>
+      </div>
+      <div class="modal-body">
+        Si eliminas este cliente no lo podrás recuperar
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="deleteElement()"
+          data-bs-dismiss="modal"
+        >
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+h1 {
+  color: #dfdfdf;
+  margin-bottom: 30px;
+}
+
+.container-welcome {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.card-welcome {
+  margin: 10%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-body-welcome {
+  display: flex;
+  align-items: center;
+}

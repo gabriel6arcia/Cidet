@@ -1,0 +1,46 @@
+h1 {
+  color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  padding: 4em;
+}
+
+.card-client {
+  padding: 4em;
+
+  @media (min-width: 1200px) {
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-client {
+    padding: 4em 10em;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-client {
+    padding: 0;
+  }
+
+  .text-name {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

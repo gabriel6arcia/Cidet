@@ -1,0 +1,222 @@
+<div class="container">
+  <div>
+    <a routerLink="" class="btn btn-outline-light btn-lg"> Atrás </a>
+    <h1 class="mt-2" style="display: flex; justify-content: center">
+      Formulario municipios
+    </h1>
+    <div class="card" style="padding: 4em">
+      <div *ngIf="loading$ | async; else muniPage">
+        <div
+          class="mt-8"
+          style="display: flex; justify-content: center; padding: 10em"
+        >
+          <p style="font-size: 30px; font-weight: 500">Cargando...</p>
+        </div>
+      </div>
+      <ng-template #muniPage>
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between">
+            <h2>Municipios</h2>
+            <button
+              class="btn btn-outline-primary mt-2"
+              style="border: 0"
+              (click)="toggleForm()"
+            >
+              + Añadir municipio
+            </button>
+          </div>
+          <form class="mt-4" *ngIf="showFormMuni">
+            <div class="input-group mb-2 containerForm">
+              <div>
+                <label class="form-label">Nombre</label>
+                <input
+                  type="text"
+                  name="nombre"
+                  [(ngModel)]="newMuni.name"
+                  class="form-control border-secondary"
+                  placeholder="Ingrese el nombre"
+                />
+              </div>
+              <div>
+                <label class="form-label">Departamento</label>
+                <select
+                  class="form-select border-secondary"
+                  aria-label="Default select example"
+                  name="department"
+                  [(ngModel)]="newMuni.departmentId"
+                >
+                  <option value="0" selected disabled>
+                    Seleccione el deparatamento
+                  </option>
+                  <option
+                    *ngFor="let department of departments$ | async"
+                    [value]="department.id"
+                  >
+                    {{ department.name }}
+                  </option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Código DANE</label>
+                <input
+                  type="text"
+                  name="dane"
+                  [(ngModel)]="newMuni.danecode"
+                  class="form-control border-secondary"
+                  placeholder="Ingrese el código DANE"
+                />
+              </div>
+              <div
+                class="mt-2"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <input
+                  type="checkbox"
+                  style="width: 16px; height: 16px"
+                  [(ngModel)]="newMuni.isCapital"
+                />
+                <label>Distrito capital</label>
+              </div>
+            </div>
+            <div style="display: flex; place-content: end">
+              <button
+                class="btn btn-outline-secondary mt-2"
+                (click)="toggleForm()"
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-primary mt-2 ms-2"
+                (click)="onCreateMuni()"
+              >
+                Añadir
+              </button>
+            </div>
+          </form>
+          <div class="table-responsive">
+            <table class="table mt-4">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Departamento</th>
+                  <th scope="col">Código DANE</th>
+                  <th scope="col">Distrito Capital</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let mun of muni$ | async; index as index">
+                <tr>
+                  <td scope="row">{{ mun.id }} {{ mun.name }}</td>
+                  <td>{{ searchDepartment(mun.departmentId) }}</td>
+                  <td>{{ mun.danecode }}</td>
+                  <td>{{ mun.isCapital }}</td>
+                  <td style="display: flex; justify-content: center">
+                    <div>
+                      <button
+                        class="btn btn-primary ms-2"
+                        (click)="
+                          showMuniForm(index, {
+                            id: mun.id,
+                            name: mun.name,
+                            departmentId: mun.departmentId,
+                            danecode: mun.danecode,
+                            isCapital: mun.isCapital
+                          })
+                        "
+                      >
+                        Modificar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger ms-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#warningModalMuni"
+                        (click)="munToDelete = mun.id"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="indexUpdate === index">
+                  <td colspan="5">
+                    <form class="mt-4 mb-4">
+                      <div class="input-group mb-2 containerForm">
+                        <div>
+                          <label class="form-label">Nombre</label>
+                          <input
+                            type="text"
+                            name="nombre"
+                            [(ngModel)]="newInfo.name"
+                            class="form-control border-secondary"
+                            placeholder="Ingrese el nombre"
+                          />
+                        </div>
+                        <div>
+                          <label class="form-label">Departamento</label>
+                          <select
+                            class="form-select border-secondary"
+                            aria-label="Default select example"
+                            name="department"
+                            [(ngModel)]="newInfo.departmentId"
+                          >
+                            <option selected disabled>
+                              Seleccione el deparatamento
+                            </option>
+                            <option
+                              *ngFor="let department of departments$ | async"
+                              [value]="department.id"
+                            >
+                              {{ department.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <div>
+                          <label class="form-label">Código DANE</label>
+                          <input
+                            type="text"
+                            name="dane"
+                            [(ngModel)]="newInfo.danecode"
+                            class="form-control border-secondary"
+                            placeholder="Ingrese el código DANE"
+                          />
+                        </div>
+                        <div
+                          class="mt-2"
+                          style="display: flex; align-items: center; gap: 8px"
+                        >
+                          <input
+                            type="checkbox"
+                            style="width: 16px; height: 16px"
+                            name="isCapital"
+                            [(ngModel)]="newInfo.isCapital"
+                          />
+                          <label>Distrito capital</label>
+                        </div>
+                      </div>
+                      <div style="display: flex; place-content: end">
+                        <button
+                          class="btn btn-outline-secondary mt-2"
+                          (click)="showMuniForm(null)"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          class="btn btn-primary mt-2 ms-2"
+                          (click)="onUpdateMuni()"
+                        >
+                          Actualizar
+                        </button>
+                      </div>
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <app-modal-warning-muni (onDelete)="onDeleteMuni($event)" />
+</div>
